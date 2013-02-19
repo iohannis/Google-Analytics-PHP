@@ -2,26 +2,9 @@
 session_start();
 require_once dirname(__FILE__).'/lib/GoogleClientApi/Google_Client.php';
 require_once dirname(__FILE__).'/lib/GoogleClientApi/contrib/Google_AdsenseService.php';
+require_once dirname(__FILE__).'gaphp.php';
 
-if (isset($_SERVER['HTTPS']) &&
-    ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
-    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-  $protocol = 'https://';
-}
-else {
-  $protocol = 'http://';
-}
-
-$scriptUri = $protocol.$_SERVER["HTTP_HOST"].$_SERVER['PHP_SELF'];
-
-$client = new Google_Client();
-$client->setAccessType('online'); // default: offline
-$client->setApplicationName('My Application name');
-$client->setClientId('INSERT HERE');
-$client->setClientSecret('INSERT HERE');
-$client->setRedirectUri($scriptUri);
-$client->setDeveloperKey('INSERT HERE'); // API key
+$client = GAPHP::get_client( 'analytics' );
 
 $service = new Google_AdsenseService($client);
 
