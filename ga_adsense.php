@@ -3,7 +3,17 @@ session_start();
 require_once dirname(__FILE__).'/lib/GoogleClientApi/Google_Client.php';
 require_once dirname(__FILE__).'/lib/GoogleClientApi/contrib/Google_AdsenseService.php';
 
-$scriptUri = "http://".$_SERVER["HTTP_HOST"].$_SERVER['PHP_SELF'];
+if (isset($_SERVER['HTTPS']) &&
+    ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+  $protocol = 'https://';
+}
+else {
+  $protocol = 'http://';
+}
+
+$scriptUri = $protocol.$_SERVER["HTTP_HOST"].$_SERVER['PHP_SELF'];
 
 $client = new Google_Client();
 $client->setAccessType('online'); // default: offline
