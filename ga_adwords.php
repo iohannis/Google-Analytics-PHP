@@ -1,10 +1,19 @@
 <?php
+// If you need to debug, uncomment these four lines
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
+error_reporting(E_ALL);
+
+/**
+ * Here we go.
+ **/
 session_start();
 require_once dirname(__FILE__).'/lib/GoogleClientApi/Google_Client.php';
 require_once dirname(__FILE__).'/lib/GoogleClientApi/contrib/Google_AnalyticsService.php';
-require_once dirname(__FILE__).'gaphp.php';
+require_once dirname(__FILE__).'/gaphp.php';
 
-$client = GAPHP::get_client( 'analytics' );
+ $client = $GAPHP->get_client( 'analytics' );
 
 $service = new Google_AnalyticsService($client);
 
@@ -13,7 +22,7 @@ if (isset($_GET['logout'])) {
     global $output_title, $output_body, $output_nav;
     $output_title = 'Adwords';
     $output_body = '<h1>You have been logged out.</h1>';
-    $output_nav = '<li><a href="'.$scriptUri.'?login">Login</a></li>'."\n";
+    $output_nav = '<li><a href="'.$GAPHP->get_option( 'script_uri' ).'?login">Login</a></li>'."\n";
     include("output.php");
     die;
 }
@@ -26,7 +35,7 @@ if (isset($_GET['login'])) {
 if (isset($_GET['code'])) { // we received the positive auth callback, get the token and store it in session
     $client->authenticate();
     $_SESSION['token_ganalytics'] = $client->getAccessToken();
-    header("Location: ".$scriptUri);
+    header("Location: ".$GAPHP->get_option( 'script_uri' ));
     die;
 }
 
@@ -39,7 +48,7 @@ if (!$client->getAccessToken()) { // auth call to google
     global $output_title, $output_body, $output_nav;
     $output_title = 'Adwords';
     $output_body = '<h1>Login with your Google account</h1><p>When clicking on login, you are redirected to Google. Login with a Google account that has access to a Google Adsense account, otherwise an error will occur.</p><div class="alert alert-info">We do not store the login credentials nor the data being displayed. This is just a simple demo page.</div>';
-    $output_nav = '<li><a href="'.$scriptUri.'?login">Login</a></li>'."\n";
+    $output_nav = '<li><a href="'.$GAPHP->get_option( 'script_uri' ).'?login">Login</a></li>'."\n";
     include("output.php");
     die;
 } 
@@ -48,7 +57,7 @@ if (!$client->getAccessToken()) { // auth call to google
 try {
     global $_params, $output_title, $output_body;
     $output_title = 'Adwords';
-    $output_nav = '<li><a href="'.$scriptUri.'?logout">Logout</a></li>'."\n";
+    $output_nav = '<li><a href="'.$GAPHP->get_option( 'script_uri' ).'?logout">Logout</a></li>'."\n";
     $output_body = '<h1>Google Adwords Access demo</h1>
                     <p>The following domains are in your Google Adwords account</p><ul>';
     $props = $service->management_webproperties->listManagementWebproperties("~all");
