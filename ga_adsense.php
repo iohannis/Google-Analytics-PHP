@@ -15,7 +15,7 @@ require_once dirname(__FILE__).'/gaphp.php';
 
 $client = $GAPHP->get_client( 'adsense' );
 
-$service = new Google_AdsenseService($client);
+// $service = new Google_AdsenseService($client);
 
 if (isset($_GET['logout'])) {
     unset($_SESSION['token_gadsense']);

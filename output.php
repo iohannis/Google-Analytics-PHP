@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>enarion.net demo page <?= $output_title ?></title>
+    <title>Google Analytics PHP - <?= $output_title ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="_res/css/bootstrap.css" rel="stylesheet">
     <style>

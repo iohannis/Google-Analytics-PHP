@@ -1,7 +1,7 @@
 <?
 global $output_title, $output_body, $output_nav;
 $output_title = '';
-$output_body = '<h1>enarion.net Google Client API demos</h1>
+$output_body = '<h1>Google Client API</h1>
 <p>Please click on one of the entries in the navigation bar <u>at the top</u>. You need a Google (user) account with access to the appropriate service, otherwise an error will occur.</p>
 <div class="alert alert-info">We do not store the login credentials nor the data being displayed. This is just a simple demo page.</div>';
 
