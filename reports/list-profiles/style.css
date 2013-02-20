@@ -1,0 +1,11 @@
+.odd, .even {
+	list-style: none;
+	padding: 8px;
+	background: rgb(247, 244, 220);
+}
+.even {
+	background: rgb(218, 215, 196);
+}
+.report-item {
+	display: inline-block;
+}

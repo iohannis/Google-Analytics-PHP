@@ -9,6 +9,7 @@ if( !class_exists('GAPHP') ) {
 	  private $_client;
 	  private $_type;
 	  private $_service;
+	  private $_head; // For adding to the html <head>
 	  
 	  /**
 	   * Start the show
@@ -185,22 +186,41 @@ if( !class_exists('GAPHP') ) {
 		
 	  /**
 	   * Load a report
-	   * @param string $name
+	   * @param string $report_name
 	   **/
-	  function report( $name = '' )
+	  function report( $report_name = '' )
 	  {
 		try {
-			if( !is_string($name) ) {
+			if( !is_string($report_name) ) {
 				return false;
 			}
-			// Check if $name report dir exists in /reports and load report.php if it exists
-			if( file_exists( dirname(__FILE__) . '/reports/'.$name . '/report.php' ) ) {
+			// Check if $report_name report dir exists in /reports and load report.php if it exists
+			if( file_exists( dirname(__FILE__) . '/reports/'.$report_name . '/report.php' ) ) {
+				$report_uri = '/reports/'.$report_name;
 				$service = $this->service( $this->_type );
-				include( dirname(__FILE__) . '/reports/' . $name . '/report.php' );
+				include( dirname(__FILE__) . '/reports/' . $report_name . '/report.php' );
 			}
 			// Check if there is an config.php file for settings
 			// Check if there is a template.php file 
 			// Load stuff from the API based on params specified in the config file, into the template
+		} catch (Exception $e) {
+			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
+		}
+	  }
+		
+	  /**
+	   * Controlling the head html 
+	   * @param string $name
+	   * @todo add $priority for sorting the head items
+	   * @return mixed $head - Array of strings if populated, or FALSE
+	   **/
+	  function head( $name = '' )
+	  {
+		try {
+			if( !is_string($name) || $name === '' ) {
+				return $this->_head;
+			}
+			$this->_head[] = $name;
 		} catch (Exception $e) {
 			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
 		}
