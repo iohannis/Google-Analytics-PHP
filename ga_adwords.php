@@ -1,9 +1,9 @@
 <?php
 // If you need to debug, uncomment these four lines
-ini_set('display_errors', 1);
-ini_set('log_errors', 1);
-ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('log_errors', 1);
+// ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
+// error_reporting(E_ALL);
 
 /**
  * @todo Create a settings file that initializes everything.
@@ -49,7 +49,7 @@ if (isset($_SESSION['token_ganalytics'])) { // extract token from session and co
     $client->setAccessToken($token);
 }
 
-if (!$client->getAccessToken()) { // auth call to google
+if ( ! $google_access_token = $client->getAccessToken() ) { // auth call to google
     global $output_title, $output_body, $output_nav;
     $output_title = 'Adwords';
     $output_body = '<h1>Login with your Google account</h1><p>When clicking on login, you are redirected to Google. Login with a Google account that has access to a Google Adsense account, otherwise an error will occur.</p><div class="alert alert-info">We do not store the login credentials nor the data being displayed. This is just a simple demo page.</div>';
@@ -58,7 +58,11 @@ if (!$client->getAccessToken()) { // auth call to google
     die;
 } 
 
-$GAPHP->report( 'list-profiles' );
+$report = 'list-profiles';
+$cachefile = 'cache-'.$google_access_token.'/report-'.$report.'.html';
+include('gaphp/top-cache.php'); 
+$GAPHP->report( $report );
+include('gaphp/bottom-cache.php'); 
 
 // http://code.google.com/apis/analytics/docs/mgmt/v3/mgmtReference.html#collection_webproperties
 // try {

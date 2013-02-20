@@ -9,8 +9,9 @@ try {
     $props = $service->management_profiles->listManagementProfiles("~all","~all");
     foreach($props['items'] as $item) {
 		$stats = $this->get_profile_data( $item['id'] );
+		$url = parse_url($item['websiteUrl']);
         $output_body .= '<li class="profile-'.$item['id'].'">';
-        $output_body .= '<span class="report-item name">'.$item['name'].'</span> ';
+        $output_body .= '<span class="report-item name">'.$url['host'].'</span> ';
         $output_body .= sprintf('<a href="%1$s" target="_blank" class="report-item link">[link]</a>', $item['websiteUrl'] );
         $output_body .= '<span class="statistics">';
         $output_body .= '<span class="report-item visits">Visits: '.$stats['totalsForAllResults']['ga:visits'].'</span> ';

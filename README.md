@@ -10,14 +10,25 @@ A <a href="http://enarion.net/demos/">demo</a> is available as well.
 
 I've forked this project to add some more features, and make it more as an app than a quick demo example.
 
-usage
+Usage
 -----
-1. copy the contents of the repo to your webserver
+1. Copy the contents of the repo to your webserver
 
-2. open index.php with your browser, select Adsense or Adwords in the top navigation bar.
+2. Open config-sample.php with your text editor, edit the values and save as config.php
 
-3. start hacking ga_adsense.php for Adsense data export or ga_adwords.php for Analytics data.
+3. Go to index.php in your browser, click the service you want to use, and authenticate with Google.
 
-license
+More to come
+------------
+This is a very early stage project, and here are some of the planned features:
+- AJAX loading statistics
+- Styling the reports to get a better overview
+- Google Charts or other visual help
+- Caching API responses
+- Better reports templates
+- Possibly a different framework than Twitter's Bootstrap, one that fits statistics well
+- Animations in loading, creating a modern feel
+
+License
 -------
 Licensed under MIT license (refer to <a href="LICENSE">LICENSE</a> for the license text and more information).
