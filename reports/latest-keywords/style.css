@@ -19,9 +19,6 @@
 	text-indent: -999px;
 	width: 32px;;
 }
-.report-item.keyword.link {
-	background: url(images/report_icon.png) center no-repeat;
-}
 .statistics {
 	border: 1px solid orange;
 	padding: 2px;

@@ -20,6 +20,12 @@ require_once dirname(__FILE__).'/gaphp.php';
 $GAPHP->config( 'analytics' );
 $client = $GAPHP->get_client( 'analytics' );
 
+if( isset($_GET['clear']) && $_GET['clear'] === 'token' ) {
+	setcookie('token_ganalytics');
+	$_SESSION['token_ganalytics'] = '';
+	unset($_SESSION['token_ganalytics']);
+	unset($_COOKIE['token_ganalytics']);
+}
 // $service = new Google_AnalyticsService($client);
 
 if (isset($_GET['logout'])) {
@@ -45,22 +51,22 @@ if (isset($_GET['code'])) { // we received the positive auth callback, get the t
     die;
 }
 
-if (isset($_SESSION['token_ganalytics']) || isset($_COOKIE['token_ganalytics'])) { // extract token from session and configure client
+if ( (isset($_SESSION['token_ganalytics']) && !empty($_SESSION['token_ganalytics']) ) || (isset($_COOKIE['token_ganalytics']) && !empty($_COOKIE['token_ganalytics']) ) ) { // extract token from session and configure client
     $token = ( isset($_SESSION['token_ganalytics']) ) ? $_SESSION['token_ganalytics'] : $_COOKIE['token_ganalytics'];
     $client->setAccessToken($token);
 }
 
 if ( ! $google_access_token = $client->getAccessToken() ) { // auth call to google
     global $output_title, $output_body, $output_nav;
-    $output_title = 'Adwords';
+    $output_title = 'Google Analytics';
     $output_body = '<h1>Login with your Google account</h1><p>When clicking on login, you are redirected to Google. Login with a Google account that has access to a Google Adsense account, otherwise an error will occur.</p><div class="alert alert-info">We do not store the login credentials nor the data being displayed. This is just a simple demo page.</div>';
     $output_nav = '<li><a href="'.$GAPHP->get_option( 'script_uri' ).'?login">Login</a></li>'."\n";
     include("output.php");
     die;
 } 
-
-$report = 'list-profiles';
-$cachefile = 'cache/report-'.$report.'.html';
+	
+$report = ( isset($_GET['report']) ) ? $_GET['report'] : 'list-profiles';
+$cachefile = dirname(__FILE__).'/cache/report-'.$report.'.html';
 include('gaphp/top-cache.php'); 
 $GAPHP->report( $report );
 include('gaphp/bottom-cache.php'); 

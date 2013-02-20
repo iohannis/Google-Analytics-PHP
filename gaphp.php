@@ -19,6 +19,7 @@ if( !class_exists('GAPHP') ) {
 	  function __construct()
 	  {
 		$this->_head = array();
+		$this->_footer = array();
 		$this->config();
 	  }
 	  
@@ -195,12 +196,13 @@ if( !class_exists('GAPHP') ) {
 			if( !is_string($report_name) ) {
 				return false;
 			}
-			// Check if $report_name report dir exists in /reports and load report.php if it exists
-			if( file_exists( dirname(__FILE__) . '/reports/'.$report_name . '/report.php' ) ) {
-				$report_uri = $this->_setting['base_uri'] . '/reports/' . $report_name;
-				$service = ($this->_type) ? $this->service( $this->_type ) : false;
-				include( dirname(__FILE__) . '/reports/' . $report_name . '/report.php' );
+			// Check if $report_name report dir exists in /reports and load report.php if it exists, otherwise the default report
+			if( ! file_exists( dirname(__FILE__) . '/reports/'.$report_name . '/report.php' ) ) {
+				$report_name = 'default';
 			}
+			$report_uri = $this->_setting['base_uri'] . '/reports/' . $report_name;
+			$service = ($this->_type) ? $this->service( $this->_type ) : false;
+			include( dirname(__FILE__) . '/reports/' . $report_name . '/report.php' );
 			// Check if there is an config.php file for settings
 			// Check if there is a template.php file 
 			// Load stuff from the API based on params specified in the config file, into the template
