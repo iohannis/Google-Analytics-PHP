@@ -60,7 +60,7 @@ if ( ! $google_access_token = $client->getAccessToken() ) { // auth call to goog
 } 
 
 $report = 'list-profiles';
-$cachefile = 'cache-'.$google_access_token.'-report-'.$report.'.html';
+$cachefile = 'cache/report-'.$report.'.html';
 include('gaphp/top-cache.php'); 
 $GAPHP->report( $report );
 include('gaphp/bottom-cache.php'); 

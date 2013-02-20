@@ -12,8 +12,10 @@
     </style>
     <link href="_res/css/bootstrap-responsive.css" rel="stylesheet">
 	<?php
-		if( $head = $GAPHP->head() ) {
-			echo implode("\n",$head);
+		if( $head = $this->head() ) {
+			foreach( $head as $h ) {
+				echo "\n".$h;
+			}
 		}
 	?>
   </head>

@@ -1,6 +1,6 @@
 .odd, .even {
 	list-style: none;
-	padding: 8px;
+	padding: 0;
 	background: rgb(247, 244, 220);
 }
 .even {
@@ -8,4 +8,31 @@
 }
 .report-item {
 	display: inline-block;
+}
+.report-item.name {
+	font-size: 32px;
+	font-weight: bold;
+	padding: 8px;
+}
+.report-item.link {
+	background: url(images/new-window.png) center no-repeat;
+	text-indent: -999px;
+	width: 32px;;
+}
+.statistics {
+	border: 1px solid orange;
+	padding: 2px;
+}
+.statistics .label, .statistics .value {
+	display:block;
+}
+.statistics .label {
+	background: rgb(145, 218, 110);
+}
+
+.positive.trend {
+	background: #aea;
+}
+.negative.trend {
+	background: #eaa;
 }

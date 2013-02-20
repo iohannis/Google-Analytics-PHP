@@ -6,6 +6,7 @@
 if( !class_exists('GAPHP') ) {
 	class GAPHP {
 	  private $_config;
+	  private $_setting;
 	  private $_client;
 	  private $_type;
 	  private $_service;
@@ -16,6 +17,7 @@ if( !class_exists('GAPHP') ) {
 	   **/
 	  function __construct()
 	  {
+		$this->_head = array();
 		$this->config();
 	  }
 	  
@@ -33,7 +35,7 @@ if( !class_exists('GAPHP') ) {
 			}
 			return $this->_service;
 		} catch (Exception $e) {
-			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
+			die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
 		}
 	  }
 	  
@@ -62,9 +64,10 @@ if( !class_exists('GAPHP') ) {
 			$scriptUri = $protocol.$_SERVER["HTTP_HOST"].$_SERVER['PHP_SELF'];
 			$this->_config['script_uri'] = $scriptUri;
 			$this->_type = $type;
+			$this->_setting = $setting;
 			return true;
 		} catch (Exception $e) {
-			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
+			die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
 		}
 	  }
 	  
@@ -86,7 +89,7 @@ if( !class_exists('GAPHP') ) {
 			);
 			return ( in_array( $option, $public_options ) ) ? $this->_config[$option] : false;
 		} catch (Exception $e) {
-			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
+			die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
 		}
 	  }
 	  
@@ -114,7 +117,7 @@ if( !class_exists('GAPHP') ) {
 			$this->service($type);
 			return $client;
 		} catch (Exception $e) {
-			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
+			die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
 		}
 	  }
 	  
@@ -128,7 +131,7 @@ if( !class_exists('GAPHP') ) {
 		try {
 			
 		} catch (Exception $e) {
-			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
+			die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
 		}
 	  }
 
@@ -196,7 +199,7 @@ if( !class_exists('GAPHP') ) {
 			}
 			// Check if $report_name report dir exists in /reports and load report.php if it exists
 			if( file_exists( dirname(__FILE__) . '/reports/'.$report_name . '/report.php' ) ) {
-				$report_uri = '/reports/'.$report_name;
+				$report_uri = $this->_setting['base_uri'] . '/reports/' . $report_name;
 				$service = $this->service( $this->_type );
 				include( dirname(__FILE__) . '/reports/' . $report_name . '/report.php' );
 			}
@@ -204,25 +207,25 @@ if( !class_exists('GAPHP') ) {
 			// Check if there is a template.php file 
 			// Load stuff from the API based on params specified in the config file, into the template
 		} catch (Exception $e) {
-			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
+			die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
 		}
 	  }
 		
 	  /**
 	   * Controlling the head html 
-	   * @param string $name
+	   * @param string $item
 	   * @todo add $priority for sorting the head items
 	   * @return mixed $head - Array of strings if populated, or FALSE
 	   **/
-	  function head( $name = '' )
+	  function head( $item = '' )
 	  {
 		try {
-			if( !is_string($name) || $name === '' ) {
+			if( !is_string($item) || $item === '' ) {
 				return $this->_head;
 			}
-			$this->_head[] = $name;
+			$this->_head[] = $item;
 		} catch (Exception $e) {
-			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
+			die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
 		}
 	  }
 	}
