@@ -22,4 +22,4 @@ $config = array(
 		);
 // Site settings
 $setting = array();
-$setting['base_uri']	=	'/analytics';
+$setting['base_uri']	=	'';

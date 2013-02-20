@@ -29,6 +29,10 @@
 .statistics .label {
 	background: rgb(145, 218, 110);
 }
+.statistics .no-result {
+	background: #aaa;
+	color: #ddd;
+}
 
 .positive.trend {
 	background: #aea;

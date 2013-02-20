@@ -36,6 +36,15 @@
     <div class="container">
 		<?= $output_body ?>
     </div>
-
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<?php // This is the place to load scripts
+		if( $footer = $this->footer() ) {
+			foreach( $footer as $h ) { ?>
+			<?php echo $h; ?>
+			<?php
+			}
+		}
+	?>
   </body>
 </html>
