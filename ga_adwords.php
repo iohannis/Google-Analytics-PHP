@@ -41,12 +41,13 @@ if (isset($_GET['login'])) {
 if (isset($_GET['code'])) { // we received the positive auth callback, get the token and store it in session
     $client->authenticate();
     $_SESSION['token_ganalytics'] = $client->getAccessToken();
+	setcookie('token_ganalytics', $_SESSION['token_ganalytics'], strtotime( '+30 days' ), '/', $_SERVER['HTTP_HOST'], true); // Secure cookie for SSL connections
     header("Location: ".$GAPHP->get_option( 'script_uri' ));
     die;
 }
 
-if (isset($_SESSION['token_ganalytics'])) { // extract token from session and configure client
-    $token = $_SESSION['token_ganalytics'];
+if (isset($_SESSION['token_ganalytics']) || isset($_COOKIE['token_ganalytics'])) { // extract token from session and configure client
+    $token = ( isset($_SESSION['token_ganalytics']) ) ? $_SESSION['token_ganalytics'] : $_COOKIE['token_ganalytics'];
     $client->setAccessToken($token);
 }
 
