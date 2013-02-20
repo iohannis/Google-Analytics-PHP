@@ -5,12 +5,19 @@ try {
     $output_nav = '<li><a href="'.$this->get_option( 'script_uri' ).'?logout">Logout</a></li>'."\n";
     $output_body = '<h1>Google Analytics profiles list</h1>
                     <p>The following domains are in your Google Analytics account</p><ul>';
-    $props = $service->management_webproperties->listManagementWebproperties("~all");
+    // $props = $service->management_webproperties->listManagementWebproperties("~all");
+    $props = $service->management_profiles->listManagementProfiles("~all","~all");
     foreach($props['items'] as $item) {
-        $output_body .= sprintf('<li><a href="%2$s" target="_blank" class="report-item link">%1$s</a></li>', $item['name'], $item['websiteUrl'] );
-        $output_body .= '<!-- ';
-        $output_body .= print_r($item, true);
-        $output_body .= ' -->';
+		$stats = $this->get_profile_data( $item['id'] );
+        $output_body .= '<li class="profile-'.$item['id'].'">';
+        $output_body .= '<span class="report-item name">'.$item['name'].'</span> ';
+        $output_body .= sprintf('<a href="%1$s" target="_blank" class="report-item link">[link]</a>', $item['websiteUrl'] );
+        $output_body .= '<span class="statistics">';
+        $output_body .= '<span class="report-item visits">Visits: '.$stats['totalsForAllResults']['ga:visits'].'</span> ';
+        $output_body .= '<span class="report-item new-visits-percent">New visits: '.round($stats['totalsForAllResults']['ga:percentNewVisits'], 1).'%</span> ';
+        $output_body .= '<span class="report-item bounces">Bounces: '.$stats['totalsForAllResults']['ga:bounces'].'</span> ';
+        $output_body .= '</span> ';
+        $output_body .= '</li>';
     }
     $output_body .= '</ul>';
     include("output.php");

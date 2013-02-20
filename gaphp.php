@@ -110,6 +110,7 @@ if( !class_exists('GAPHP') ) {
 			$client->setRedirectUri( $this->_config['script_uri'] );
 			$client->setDeveloperKey( $this->_config['api_key'] );
 			$this->_client = $client;
+			$this->service($type);
 			return $client;
 		} catch (Exception $e) {
 			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
@@ -129,7 +130,59 @@ if( !class_exists('GAPHP') ) {
 			die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
 		}
 	  }
-	  
+
+		/**
+		* Queries the Core Reporting API and returns the top 25 organic
+		* search terms.
+		* @param string $id The profileId to use in the query.
+		* @param array $attr Options for the query.
+		* @return GaData the results from the Core Reporting API.
+		*/
+		function get_profile_data($id, $attr = array() ) {
+			if(empty($id)) {
+				return false;
+			}
+			
+			$additional = array();
+			if( isset($attr['dimensions']) ) $additional['dimensions'] = $attr['dimensions'];
+			if( isset($attr['sort']) ) $additional['sort'] = $attr['sort'];
+			if( isset($attr['filters']) ) $additional['filters'] = $attr['filters'];
+			if( isset($attr['max-results']) ) $additional['max-results'] = $attr['max-results'];
+			
+			$attr['metrics'] = (isset($attr['metrics'])) ? $attr['metrics'] : 'ga:visits,ga:percentNewVisits,ga:bounces';
+			$attr['period'] = (isset($attr['period'])) ? $attr['period'] : '30 days';
+			$attr['offset'] = (isset($attr['offset'])) ? $attr['offset'] : 0;
+			$attr['startdate'] = (isset($attr['startdate'])) ? $attr['startdate'] : 'calculate';
+			$attr['enddate'] = (isset($attr['enddate'])) ? $attr['enddate'] : 'calculate';
+			switch($attr['period']) {
+				case '30 days':
+					if($attr['startdate']==='calculate') {
+						$ago = ($attr['offset']) ? $attr['offset'] + 31 : 31;
+						$attr['startdate'] = date( 'Y-m-d', time() - ($ago * 86400) ); // 31 days ago default
+					}
+					if($attr['enddate']==='calculate') {
+						$ago = ($attr['offset']) ? $attr['offset'] + 1 : 1;
+						$attr['enddate'] = date( 'Y-m-d', time() - ($ago * 86400) ); // 1 day ago default (more accurate than today)
+					}
+					break;
+				case '1 year':
+					if($attr['startdate']==='calculate') {
+						$attr['startdate'] = date( 'Y-m-d', mktime(0, 0, 0, date("m"),   date("d"),   date("Y")-1) ); // One year ago
+					}
+					if($attr['enddate']==='calculate') {
+						$attr['enddate'] = date( 'Y-m-d', time() - (86400) ); // 1 day ago (OK, so a year minus a day)
+					}
+					break;
+			}
+			return $this->_service->data_ga->get(
+					'ga:' . $id,
+					$attr['startdate'],
+					$attr['enddate'],
+					$attr['metrics'],
+					$additional			
+				);
+		}	
+		
 	  /**
 	   * Load a report
 	   * @param string $name
