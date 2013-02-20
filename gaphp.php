@@ -11,6 +11,7 @@ if( !class_exists('GAPHP') ) {
 	  private $_type;
 	  private $_service;
 	  private $_head; // For adding to the html <head>
+	  private $_footer; // For adding to the page footer
 	  
 	  /**
 	   * Start the show
@@ -42,14 +43,11 @@ if( !class_exists('GAPHP') ) {
 	  /**
 	   * Load the config file
 	   **/
-	  function config( $type = 'analytics' )
+	  function config( $type = '' )
 	  {
 		try {
-			require_once( dirname(__FILE__).'/config.php' );
-			$this->_config = $config[$type];
-			if( empty($this->_config) || in_array('INSERT HERE', $this->_config) || in_array('', $this->_config) ) { // Don't allow default or empty strings
-				return false;
-			}
+			require( dirname(__FILE__).'/config.php' );
+			$this->_config = (isset($config[$type])) ? $config[$type] : false;
 			
 			// Identify the protocol
 			if (isset($_SERVER['HTTPS']) &&
@@ -200,7 +198,7 @@ if( !class_exists('GAPHP') ) {
 			// Check if $report_name report dir exists in /reports and load report.php if it exists
 			if( file_exists( dirname(__FILE__) . '/reports/'.$report_name . '/report.php' ) ) {
 				$report_uri = $this->_setting['base_uri'] . '/reports/' . $report_name;
-				$service = $this->service( $this->_type );
+				$service = ($this->_type) ? $this->service( $this->_type ) : false;
 				include( dirname(__FILE__) . '/reports/' . $report_name . '/report.php' );
 			}
 			// Check if there is an config.php file for settings
@@ -224,6 +222,24 @@ if( !class_exists('GAPHP') ) {
 				return $this->_head;
 			}
 			$this->_head[] = $item;
+		} catch (Exception $e) {
+			die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
+		}
+	  }
+		
+	  /**
+	   * Contents for the footer 
+	   * @param string $item
+	   * @todo add $priority for sorting the footer items
+	   * @return mixed $footer - Array of strings if populated, or FALSE
+	   **/
+	  function footer( $item = '' )
+	  {
+		try {
+			if( !is_string($item) || $item === '' ) {
+				return $this->_footer;
+			}
+			$this->_footer[] = $item;
 		} catch (Exception $e) {
 			die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
 		}

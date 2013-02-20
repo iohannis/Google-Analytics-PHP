@@ -26,6 +26,5 @@ try {
     $output_body .= '</ul>';
     include("output.php");
 } catch (Exception $e) {
-	echo $this->_client->getAccessToken();
-	die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li>".array_walk(debug_backtrace(),create_function('$a,$b','print "<li>{$a[\'function\']}()(".basename($a[\'file\']).":{$a[\'line\']}); </li>";'))."</ul>\n<p>".__METHOD__."</p></body></html>");
+	die('<html><body><h1>An error occurred: </h1><ul><li>' . $e->getMessage()."</li></ul>\n<p>".__METHOD__."</p></body></html>");
 }

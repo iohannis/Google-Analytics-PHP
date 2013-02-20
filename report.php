@@ -6,10 +6,8 @@ ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
 error_reporting(E_ALL);
 
 /**
- * @todo Create a settings file that initializes everything.
- * @todo Make the index.php a wrapper file to include everything else.
- * @todo Extract code to a library, to avoid repeating code.
- * @todo Add feature for specifying reports, with their own settings and templates
+ * @todo Make the index.php a wrapper file to inilialize and wrap everything else.
+ * @todo Extract more code to a library, to avoid repeating code.
  * @todo Cache API responses, so we don't reach the data limits on API calls
  *
  * Here we go.
@@ -19,7 +17,8 @@ require_once dirname(__FILE__).'/lib/GoogleClientApi/Google_Client.php';
 require_once dirname(__FILE__).'/lib/GoogleClientApi/contrib/Google_AnalyticsService.php';
 require_once dirname(__FILE__).'/gaphp.php';
 
- $client = $GAPHP->get_client( 'analytics' );
+$GAPHP->config( 'analytics' );
+$client = $GAPHP->get_client( 'analytics' );
 
 // $service = new Google_AnalyticsService($client);
 
@@ -65,23 +64,3 @@ $cachefile = 'cache/report-'.$report.'.html';
 include('gaphp/top-cache.php'); 
 $GAPHP->report( $report );
 include('gaphp/bottom-cache.php'); 
-
-// http://code.google.com/apis/analytics/docs/mgmt/v3/mgmtReference.html#collection_webproperties
-// try {
-    // global $_params, $output_title, $output_body;
-    // $output_title = 'Adwords';
-    // $output_nav = '<li><a href="'.$GAPHP->get_option( 'script_uri' ).'?logout">Logout</a></li>'."\n";
-    // $output_body = '<h1>Google Adwords Access demo</h1>
-                    // <p>The following domains are in your Google Adwords account</p><ul>';
-    // $props = $service->management_webproperties->listManagementWebproperties("~all");
-    // foreach($props['items'] as $item) {
-        // $output_body .= sprintf('<li><a href="%2$s" target="_blank" class="report-item link">%1$s</a></li>', $item['name'], $item['websiteUrl'] );
-        // $output_body .= '<!-- ';
-        // $output_body .= print_r($item, true);
-        // $output_body .= ' -->';
-    // }
-    // $output_body .= '</ul>';
-    // include("output.php");
-// } catch (Exception $e) {
-	// die('<html><body><h1>An error occured: ' . $e->getMessage()."\n </h1></body></html>");
-// }

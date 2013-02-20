@@ -1,10 +1,25 @@
-<?
-global $output_title, $output_body, $output_nav;
-$output_title = '';
-$output_body = '<h1>Google Client API</h1>
-<p>Please click on one of the entries in the navigation bar <u>at the top</u>. You need a Google (user) account with access to the appropriate service, otherwise an error will occur.</p>
-<div class="alert alert-info">We do not store the login credentials nor the data being displayed. This is just a simple demo page.</div>';
+<?php
+// If you need to debug, uncomment these four lines
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
+error_reporting(E_ALL);
 
-$output_nav = '<li><a href="ga_adsense.php">Adsense</a></li>'."\n";
-$output_nav .= '<li><a href="ga_adwords.php">Adwords</a></li>'."\n";
-include("output.php");
+/**
+ * @todo Create a settings file that initializes everything.
+ * @todo Make the index.php a wrapper file to include everything else.
+ * @todo Extract code to a library, to avoid repeating code.
+ * @todo Add feature for specifying reports, with their own settings and templates
+ * @todo Cache API responses, so we don't reach the data limits on API calls
+ *
+ * Here we go.
+ **/
+session_start();
+
+require_once dirname(__FILE__).'/gaphp.php';
+
+$report = 'default';
+$cachefile = 'cache/report-'.$report.'.html';
+include('gaphp/top-cache.php'); 
+$GAPHP->report( $report );
+include('gaphp/bottom-cache.php'); 

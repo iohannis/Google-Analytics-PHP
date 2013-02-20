@@ -18,6 +18,7 @@ require_once dirname(__FILE__).'/lib/GoogleClientApi/Google_Client.php';
 require_once dirname(__FILE__).'/lib/GoogleClientApi/contrib/Google_AdsenseService.php';
 require_once dirname(__FILE__).'/gaphp.php';
 
+$GAPHP->config( 'adsense' );
 $client = $GAPHP->get_client( 'adsense' );
 
 // $service = new Google_AdsenseService($client);

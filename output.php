@@ -12,7 +12,7 @@
     </style>
     <link href="_res/css/bootstrap-responsive.css" rel="stylesheet">
 	<?php
-		if( $head = $this->head() ) {
+		if( isset($this) && $head = $this->head() ) {
 			foreach( $head as $h ) {
 				echo "\n".$h;
 			}
@@ -39,7 +39,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
 	<?php // This is the place to load scripts
-		if( $footer = $this->footer() ) {
+		if( isset($this) && $footer = $this->footer() ) {
 			foreach( $footer as $h ) { ?>
 			<?php echo $h; ?>
 			<?php
